@@ -15,13 +15,15 @@ const TaskForm = () => {
   const [formValueText, setFormValueText] = React.useState("");
   const [arrayTask, setArrayTask] = React.useState([]);
   const [searchTask, setSearchTask] = React.useState("");
+  const [time,setTime] = React.useState('')
 
   const makeTask = () => {
-    let id = uuidv4();
-    let text = formValueText;
-    let completed = false;
+    const id = uuidv4();
+    const text = formValueText;
+    const completed = false;
+    const deadline = time
 
-    setArrayTask([...arrayTask, { id, text, completed }]);
+    setArrayTask([...arrayTask, { id, text, completed,deadline }]);
   };
 
   const removeTask = (id) => {
@@ -108,7 +110,14 @@ const TaskForm = () => {
           onChange={(event) => setSearchTask(event.target.value)}
         />
       </label>
-
+      <label>
+        deadline:
+        <input
+          type="date"
+          value={time}
+          onChange={(event) => setTime(event.target.value)}
+        />
+      </label>
       <TaskList
         taskArray={arrayTask}
         remove={removeTask}

@@ -13,6 +13,7 @@ const Task = (props) => {
         <p>
           {props.index}
           {props.text} <ImCross onClick={() => props.remove(props.id)} />
+          {props.deadline}
         </p>
       )}
       {props.completed ? (

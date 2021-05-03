@@ -10,6 +10,7 @@ const TaskList = (props) => {
         key={index}
         id={task.id}
         text={task.text}
+        deadline = {task.deadline}
         remove={props.remove}
         completeTask={props.completeTask}
         completed={task.completed}
@@ -28,6 +29,7 @@ const TaskList = (props) => {
         key={index}
         id={task.id}
         text={task.text}
+        time = {task.time}
         remove={props.remove}
         completeTask={props.completeTask}
         completed={task.completed}
