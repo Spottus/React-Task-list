@@ -15,8 +15,6 @@ const TaskForm = () => {
   const [arrayTask, setArrayTask] = React.useState([]);
   const [searchTask, setSearchTask] = React.useState("");
 
-  console.error(arrayTask)
-
   const makeTask = () => {
     let id = uuidv4();
     let text = formValueText;
@@ -44,45 +42,39 @@ const TaskForm = () => {
   };
 
   React.useEffect(() => {
-    
-    const load = async () =>
-    {
-      const response = await fetch("http://localhost:3001/tasks");
-      const data = await response.json();
-      console.error(arrayTask)
-      setArrayTask(data);
-    }
+    const load = async () => {
+      let result = [];
 
-    load()
+      const local =
+        localStorage.getItem("myTaskArray") !== null
+          ? JSON.parse(localStorage.getItem("myTaskArray"))
+          : null;
+
+      const response = await (
+        await fetch("http://localhost:3001/tasks")
+      ).json();
+
+      const data = local !== null ? response.concat(local) : response;
+      data.forEach(element => cleanMerge(element,result))
+      setArrayTask(result);
+    };
+
+    load();
   }, []);
 
   React.useEffect(() => {
-    const data = arrayTask.concat(JSON.parse(localStorage.getItem("myTaskArray")))
-    
-    let unique = [];
+    const data = arrayTask;
+
     const result = [];
 
-    data.forEach((element) => {
-      if (!unique.find((uniq) => uniq === element.id)) {
-        unique.push(element.id);
-      }
-    });
-
-    unique = unique.filter(
-      (element, index, array) => array.indexOf(element) === index
-    );
-
-    data.forEach((element, index, array) => {
-      if (
-        unique.find((uniq) => uniq === element.id) &&
-        !isDuplicated(element.id, result)
-      ) {
-        result.push(array[index]);
-      }
-    });
+    data.forEach((element) => cleanMerge(element, result));
 
     localStorage.setItem("myTaskArray", JSON.stringify(result));
   }, [arrayTask]);
+
+  const cleanMerge = (element, array_end) => {
+    if (!isDuplicated(element.id, array_end)) array_end.push(element);
+  };
 
   const isDuplicated = (value, array) => {
     let check = 0;
