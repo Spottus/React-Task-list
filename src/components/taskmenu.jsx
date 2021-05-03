@@ -1,6 +1,7 @@
 import React from "react";
 import TaskList from "./tasklist";
 import { v4 as uuidv4 } from "uuid";
+require('dotenv').config();
 
 const TaskMenu = () => {
   return (
@@ -44,14 +45,14 @@ const TaskForm = () => {
   React.useEffect(() => {
     const load = async () => {
       let result = [];
-
+      console.log(process.env.TASK_LIST_API)
       const local =
         localStorage.getItem("myTaskArray") !== null
           ? JSON.parse(localStorage.getItem("myTaskArray"))
           : null;
 
       const response = await (
-        await fetch("http://localhost:3001/tasks")
+        await fetch('http://localhost:3001/tasks')
       ).json();
 
       const data = local !== null ? response.concat(local) : response;
