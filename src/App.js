@@ -1,9 +1,9 @@
 import React from "react";
-import TaskMenu from "./components/taskmenu";
+import InputTask from "./components/inputTask";
 
 
 const App = () => {
-  return <TaskMenu  />;
+  return <InputTask  />;
 };
 
 
