@@ -34,8 +34,8 @@ const utils = () =>
   
      return
      {
-        cleanMerge:cleanMerge
-        fetchApi:fetchApi
+        cleanMerge:cleanMerge()
+        fetchApi:fetchApi()
      }
 };
 
