@@ -1,6 +1,6 @@
 import Task from "./task";
 
-const TaskList = ({ taskArray, removeTask, taskStatusSwitch }) => {
+const TaskList = ({ taskArray, removeTask, taskStatusSwitch,searchTask}) => {
   const tList = taskArray.map((task, index) => (
     <li>
       <Task
@@ -17,7 +17,7 @@ const TaskList = ({ taskArray, removeTask, taskStatusSwitch }) => {
   ));
 
   const filteredArray = taskArray.filter(
-    (elements) => elements.text.indexOf(props.searchTask) !== -1
+    (elements) => elements.text.indexOf(searchTask) !== -1
   );
 
   const filteredTlist = filteredArray.map((task, index) => (
