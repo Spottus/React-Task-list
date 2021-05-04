@@ -1,6 +1,5 @@
 import { useState } from "react";
 import InputTaskForm from './inputTaskForm'
-import { v4 as uuidv4 } from "uuid";
 
 const InputTask = () => {
   const [formInput, setFormInput] = useState("");
@@ -9,5 +8,7 @@ const InputTask = () => {
  
 
   
-  return <InputTaskForm formInput={formInput} setFormInput={setFormInput} taskDeadline={taskDeadline} setTaskDeadline={setTaskDeadline}/>
+  return <InputTaskForm formInput={formInput} setFormInput={setFormInput} taskDeadline={taskDeadline} setTaskDeadline={setTaskDeadline} searchTask={searchTask}/>
 };
+
+export default InputTask

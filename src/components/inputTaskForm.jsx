@@ -1,10 +1,12 @@
 import React from "react";
 import TaskController from './taskController'
+
 const InputTaskForm = ({
   formInput,
   setFormInput,
   taskDeadline,
   setTaskDeadline,
+  searchTask
 }) => {
   return (
     (
@@ -28,9 +30,9 @@ const InputTaskForm = ({
       </div>
     ),
     (<div>
-      <TaskController formInput={formInput} taskDeadline={taskDeadline}/>
+      <TaskController formInput={formInput} taskDeadline={taskDeadline} searchTask={searchTask}/>
     </div>)
   );
 };
 
-export default InsertionTaskForm;
+export default InputTaskForm;

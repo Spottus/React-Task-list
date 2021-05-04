@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import TaskList from './taskList'
+import utils from '../utils'
 
-const { cleanMerge, fetchApi } = require("..utils/")();
+const {fetchApi,cleanMerge} = utils()
 
-const TaskController = ({ formInput, taskDeadline }) => {
+const TaskController = ({ formInput, taskDeadline,searchTask }) => {
   const [taskArray, setTaskArray] = useState([]);
 
   const makeTask = () => {
@@ -26,7 +27,7 @@ const TaskController = ({ formInput, taskDeadline }) => {
 
     const id = target.id;
     const text = target.text;
-    const deadline = task.deadline;
+    const deadline = target.deadline;
     const completed = !target.completed;
 
     const newArrayTask = [...taskArray];
@@ -38,15 +39,15 @@ const TaskController = ({ formInput, taskDeadline }) => {
   useEffect(() => fetchApi(setTaskArray), []);
 
   useEffect(() => {
-    const data = arrayTask;
+    const data = taskArray;
     const result = [];
 
     data.forEach((element) => cleanMerge(element, result));
 
     localStorage.setItem("myTaskArray", JSON.stringify(result));
-  }, [arrayTask]);
+  }, [taskArray]);
 
-  return <TaskList taskArray={taskArray} removeTask={removeTask} taskStatusSwitch={taskStatusSwitch}/>
+  return <TaskList taskArray={taskArray} removeTask={removeTask} taskStatusSwitch={taskStatusSwitch} searchTask={searchTask}/>
 };
 
 export default TaskController;
