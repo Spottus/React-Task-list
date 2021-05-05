@@ -2,7 +2,7 @@ import TaskList from "./taskList";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
 import InputTaskForm from "./inputTaskForm";
-import { cleanMerge, fetchApi } from "../utils";
+import { cleanMerge, fetchApi } from "../api-utils";
 
 const TaskController = ({
   formInput,
@@ -13,8 +13,10 @@ const TaskController = ({
   setSearchTask,
 }) => {
   const [taskArray, setTaskArray] = useState([]);
-  const [isExpired,setIsExpired] = useState(false);
-  
+  const [expired, setExpired] = useState(false);
+
+  const localStorageName = "myTaskArray";
+
   const makeTask = () => {
     const id = uuidv4();
     const text = formInput;
@@ -43,7 +45,7 @@ const TaskController = ({
     setTaskArray(newArrayTask);
   };
 
-  useEffect(() => fetchApi(setTaskArray), []);
+  useEffect(() => fetchApi(setTaskArray, localStorageName), []);
 
   useEffect(() => {
     const data = taskArray;
@@ -51,8 +53,14 @@ const TaskController = ({
 
     data.forEach((element) => cleanMerge(element, result));
 
-    localStorage.setItem("myTaskArray", JSON.stringify(result));
+    localStorage.setItem(localStorageName, JSON.stringify(result));
   }, [taskArray]);
+
+  const isExpired = (id) => {
+    const today = new Date();
+    const target = taskArray.filter((task) => task.id !== id);
+    if (today.getTime() > new Date(target.deadline).getTime()) setExpired(true);
+  };
 
   return (
     <div>
