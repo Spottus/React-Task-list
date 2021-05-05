@@ -1,27 +1,27 @@
 import React from "react";
 import { ImCross } from "react-icons/im";
 
-const Task = (props) => {
+const Task = ({index,id,text,deadline,removeTask,taskStatusSwitch,completed}) => {
   return (
     <div>
-      {props.completed ? (
+      {completed ? (
         <del>
-          {props.index}
-          {props.text}
+          {index}
+          {text}
         </del>
       ) : (
         <p>
-          {props.index}
-          {props.text} <ImCross onClick={() => props.remove(props.id)} />
-          {props.deadline}
+          {index}
+          {text} <ImCross onClick={() => removeTask(id)} />
+          {deadline}
         </p>
       )}
-      {props.completed ? (
-        <button onClick={() => props.completeTask(props.id, props.index)}>
+      {completed ? (
+        <button onClick={() => taskStatusSwitch(id,index)}>
           undo
         </button>
       ) : (
-        <button onClick={() => props.completeTask(props.id, props.index)}>
+        <button onClick={() => taskStatusSwitch(id,index)}>
           completo
         </button>
       )}

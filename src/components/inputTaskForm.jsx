@@ -1,12 +1,13 @@
 import React from "react";
-import TaskController from './taskController'
 
 const InputTaskForm = ({
   formInput,
-  setFormInput,
   taskDeadline,
+  searchTask,
+  setFormInput,
   setTaskDeadline,
-  searchTask
+  setSearchTask,
+  makeTask
 }) => {
   return (
     (
@@ -19,19 +20,25 @@ const InputTaskForm = ({
             onChange={(event) => setFormInput(event.target.value)}
           />
         </label>
+        <button onClick={makeTask}>aggiungi task</button>
         <label>
           deadline:
           <input
-            type="text"
+            type="date"
             value={taskDeadline}
             onChange={(event) => setTaskDeadline(event.target.value)}
           />
         </label>
+        <label>
+        search:
+        <input
+          type="text"
+          value={searchTask}
+          onChange={(event) => setSearchTask(event.target.value)}
+        />
+      </label>
       </div>
-    ),
-    (<div>
-      <TaskController formInput={formInput} taskDeadline={taskDeadline} searchTask={searchTask}/>
-    </div>)
+    ) 
   );
 };
 
