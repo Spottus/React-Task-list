@@ -1,14 +1,22 @@
 import { useState } from "react";
-import InputTaskForm from './inputTaskForm'
+import TaskController from "./taskController";
+
 
 const InputTask = () => {
   const [formInput, setFormInput] = useState("");
   const [taskDeadline, setTaskDeadline] = useState("");
   const [searchTask, setSearchTask] = useState("");
- 
 
-  
-  return <InputTaskForm formInput={formInput} setFormInput={setFormInput} taskDeadline={taskDeadline} setTaskDeadline={setTaskDeadline} searchTask={searchTask}/>
+  return (
+    <TaskController
+      formInput={formInput}
+      taskDeadline={taskDeadline}
+      searchTask={searchTask}
+      setFormInput={setFormInput}
+      setTaskDeadline={setTaskDeadline}
+      setSearchTask={setSearchTask}
+    />
+  );
 };
 
-export default InputTask
+export default InputTask;

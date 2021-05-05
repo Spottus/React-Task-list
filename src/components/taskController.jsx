@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
+import TaskList from "./taskList";
 import { v4 as uuidv4 } from "uuid";
-import TaskList from './taskList'
-import utils from '../utils'
+import { useState, useEffect } from "react";
+import InputTaskForm from "./inputTaskForm";
+import { cleanMerge, fetchApi } from "../utils";
 
-const {fetchApi,cleanMerge} = utils()
-
-const TaskController = ({ formInput, taskDeadline,searchTask }) => {
+const TaskController = ({
+  formInput,
+  taskDeadline,
+  searchTask,
+  setFormInput,
+  setTaskDeadline,
+  setSearchTask,
+}) => {
   const [taskArray, setTaskArray] = useState([]);
-
+  const [isExpired,setIsExpired] = useState(false);
+  
   const makeTask = () => {
     const id = uuidv4();
     const text = formInput;
@@ -47,7 +54,25 @@ const TaskController = ({ formInput, taskDeadline,searchTask }) => {
     localStorage.setItem("myTaskArray", JSON.stringify(result));
   }, [taskArray]);
 
-  return <TaskList taskArray={taskArray} removeTask={removeTask} taskStatusSwitch={taskStatusSwitch} searchTask={searchTask}/>
+  return (
+    <div>
+      <InputTaskForm
+        formInput={formInput}
+        taskDeadline={taskDeadline}
+        searchTask={searchTask}
+        setFormInput={setFormInput}
+        setTaskDeadline={setTaskDeadline}
+        setSearchTask={setSearchTask}
+        makeTask={makeTask}
+      />
+      <TaskList
+        searchTask={searchTask}
+        taskArray={taskArray}
+        removeTask={removeTask}
+        taskStatusSwitch={taskStatusSwitch}
+      />
+    </div>
+  );
 };
 
 export default TaskController;
