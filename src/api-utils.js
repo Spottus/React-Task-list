@@ -1,13 +1,11 @@
-export const cleanMerge = (element, array_end) => {
-  if (!isDuplicated(element.id, array_end)) array_end.push(element);
-};
 
-export const fetchApi = async (targetLocation) => {
+
+export const fetchApi = async (targetLocation,localStorageTarget) => {
   let result = [];
 
   const local =
-    localStorage.getItem("myTaskArray") !== null
-      ? JSON.parse(localStorage.getItem("myTaskArray"))
+    localStorage.getItem(localStorageTarget) !== null
+      ? JSON.parse(localStorage.getItem(localStorageTarget))
       : null;
 
   const response = await (await fetch("http://localhost:3001/tasks")).json();
@@ -16,6 +14,12 @@ export const fetchApi = async (targetLocation) => {
   data.forEach((element) => cleanMerge(element, result));
   targetLocation(result);
 };
+
+
+export const cleanMerge = (element, array_end) => {
+  if (!isDuplicated(element.id, array_end)) array_end.push(element);
+};
+
 
 const isDuplicated = (value, array) => {
   let check = 0;
