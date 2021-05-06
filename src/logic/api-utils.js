@@ -1,6 +1,4 @@
-
-
-export const fetchApi = async (targetLocation,localStorageTarget) => {
+export const fetchApi = async (setTargetState, localStorageTarget) => {
   let result = [];
 
   const local =
@@ -12,14 +10,21 @@ export const fetchApi = async (targetLocation,localStorageTarget) => {
 
   const data = local !== null ? response.concat(local) : response;
   data.forEach((element) => cleanMerge(element, result));
-  targetLocation(result);
+  setTargetState(result)
 };
 
+export const makeTaskJson = (uuid, formInput, taskDeadline, comp) => {
+  const id = uuid;
+  const text = formInput;
+  const deadline = taskDeadline;
+  const completed = comp;
+
+  return { id, text, deadline, completed };
+};
 
 export const cleanMerge = (element, array_end) => {
   if (!isDuplicated(element.id, array_end)) array_end.push(element);
 };
-
 
 const isDuplicated = (value, array) => {
   let check = 0;

@@ -24,7 +24,7 @@ const InputTaskForm = ({
         <label>
           deadline:
           <input
-            type="date"
+            type="datetime-locaL"
             value={taskDeadline}
             onChange={(event) => setTaskDeadline(event.target.value)}
           />
