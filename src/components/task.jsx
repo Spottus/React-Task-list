@@ -1,7 +1,10 @@
 import React from "react";
 import { ImCross } from "react-icons/im";
 
-const Task = ({index,id,text,deadline,removeTask,taskStatusSwitch,completed}) => {
+const Task = ({index,id,text,deadline,completed,removeTask,taskStatusSwitch}) => {
+
+  const isExpired = Date.now()> Date.parse(deadline) 
+
   return (
     <div>
       {completed ? (
@@ -13,7 +16,7 @@ const Task = ({index,id,text,deadline,removeTask,taskStatusSwitch,completed}) =>
         <p>
           {index}
           {text} <ImCross onClick={() => removeTask(id)} />
-          {deadline}
+          {isExpired? <p style = {{color:'red'}}>{deadline}</p>:<p style = {{color:'green'}}>{deadline}</p>}
         </p>
       )}
       {completed ? (

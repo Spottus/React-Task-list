@@ -1,8 +1,9 @@
 import TaskList from "./taskList";
 import { v4 as uuidv4 } from "uuid";
+import useInterval from "@use-it/interval";
 import { useState, useEffect } from "react";
 import InputTaskForm from "./inputTaskForm";
-import { cleanMerge, fetchApi } from "../api-utils";
+import { cleanMerge, fetchApi, makeTaskJson } from "../logic/api-utils";
 
 const TaskController = ({
   formInput,
@@ -13,17 +14,15 @@ const TaskController = ({
   setSearchTask,
 }) => {
   const [taskArray, setTaskArray] = useState([]);
-  const [expired, setExpired] = useState(false);
+  const [verifyExpired,setVerifyExpired] = useState(false)
 
   const localStorageName = "myTaskArray";
 
   const makeTask = () => {
-    const id = uuidv4();
-    const text = formInput;
-    const deadline = taskDeadline;
-    const completed = false;
-
-    setTaskArray([...taskArray, { id, text, deadline, completed }]);
+    setTaskArray([
+      ...taskArray,
+      makeTaskJson(uuidv4(), formInput, taskDeadline, false),
+    ]);
   };
 
   const removeTask = (id) => {
@@ -33,19 +32,25 @@ const TaskController = ({
 
   const taskStatusSwitch = (Id, index) => {
     const target = taskArray.find((element) => element.id === Id);
-
-    const id = target.id;
-    const text = target.text;
-    const deadline = target.deadline;
-    const completed = !target.completed;
-
     const newArrayTask = [...taskArray];
-    newArrayTask.splice(index, 1, { id, text, deadline, completed });
+
+    newArrayTask.splice(
+      index,
+      1,
+      makeTaskJson(
+        target.id,
+        target.text,
+        target.deadline,
+        !target.completed
+      )
+    );
 
     setTaskArray(newArrayTask);
   };
 
-  useEffect(() => fetchApi(setTaskArray, localStorageName), []);
+  useEffect(() => {
+    fetchApi(setTaskArray, localStorageName)
+  }, []);
 
   useEffect(() => {
     const data = taskArray;
@@ -56,11 +61,8 @@ const TaskController = ({
     localStorage.setItem(localStorageName, JSON.stringify(result));
   }, [taskArray]);
 
-  const isExpired = (id) => {
-    const today = new Date();
-    const target = taskArray.filter((task) => task.id !== id);
-    if (today.getTime() > new Date(target.deadline).getTime()) setExpired(true);
-  };
+  
+ useInterval(() => setVerifyExpired(!verifyExpired), 1000);
 
   return (
     <div>

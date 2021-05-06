@@ -9,9 +9,9 @@ const TaskList = ({ taskArray, removeTask, taskStatusSwitch,searchTask}) => {
         id={task.id}
         text={task.text}
         deadline={task.deadline}
+        completed={task.completed}
         removeTask={removeTask}
         taskStatusSwitch={taskStatusSwitch}
-        completed={task.completed}
       />
     </li>
   ));
@@ -28,9 +28,10 @@ const TaskList = ({ taskArray, removeTask, taskStatusSwitch,searchTask}) => {
         id={task.id}
         text={task.text}
         deadline={task.deadline}
+        completed={task.completed}
         removeTask={removeTask}
         taskStatusSwitch={taskStatusSwitch}
-        completed={task.completed}
+      
       />
     </li>
   ));
