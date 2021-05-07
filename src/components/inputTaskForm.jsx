@@ -1,4 +1,5 @@
 import React from "react";
+import Switch from 'rc-switch';
 
 const InputTaskForm = ({
   formInput,
@@ -36,6 +37,13 @@ const InputTaskForm = ({
           value={searchTask}
           onChange={(event) => setSearchTask(event.target.value)}
         />
+      </label>
+      <label>
+      <Switch
+      checkedChildren="completi"
+      unCheckedChildren="scaduti"
+      />
+     
       </label>
       </div>
     ) 
