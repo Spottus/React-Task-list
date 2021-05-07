@@ -14,7 +14,7 @@ const TaskController = ({
   setSearchTask,
 }) => {
   const [taskArray, setTaskArray] = useState([]);
-  const [verifyExpired,setVerifyExpired] = useState(false)
+  const [verifyExpired, setVerifyExpired] = useState(false);
 
   const localStorageName = "myTaskArray";
 
@@ -30,26 +30,27 @@ const TaskController = ({
     setTaskArray(result);
   };
 
-  const taskStatusSwitch = (Id, index) => {
-    const target = taskArray.find((element) => element.id === Id);
-    const newArrayTask = [...taskArray];
-
-    newArrayTask.splice(
-      index,
-      1,
-      makeTaskJson(
-        target.id,
-        target.text,
-        target.deadline,
-        !target.completed
-      )
-    );
+  const taskStatusSwitch = (targetId) => {
+    debugger
+    const target = taskArray.find((element) => element.id === targetId);
+    let newArrayTask = [...taskArray];
+    
+    newArrayTask.forEach((element, index, array) => {
+      if (element.id === target.id) {
+        array[index] = makeTaskJson(
+          target.id,
+          target.text,
+          target.deadline,
+          !target.completed
+        );
+      }
+    });
 
     setTaskArray(newArrayTask);
   };
 
   useEffect(() => {
-    fetchApi(setTaskArray, localStorageName)
+    fetchApi(setTaskArray, localStorageName);
   }, []);
 
   useEffect(() => {
@@ -61,8 +62,7 @@ const TaskController = ({
     localStorage.setItem(localStorageName, JSON.stringify(result));
   }, [taskArray]);
 
-  
- useInterval(() => setVerifyExpired(!verifyExpired), 1000);
+  useInterval(() => setVerifyExpired(!verifyExpired), 30000);
 
   return (
     <div>
