@@ -28,11 +28,10 @@ const Search = ({
 
   const changeCheckBox = (index) =>
   {
-    for(let index in checkbox)
-    {
-        
-    }
-    setCheckbox(!checkbox[index].check)
+    const target = checkbox.find(element=> element.name === 'tutti')
+    if(!target.check && checkbox[index] !== target)  setCheckbox(!checkbox[index].check)
+    if(target.check && checkbox[index] === target)  setCheckbox(!checkbox[index].check)
+    
   }
 
 
