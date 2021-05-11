@@ -1,4 +1,5 @@
 import React from "react";
+
 import { ImCross } from "react-icons/im";
 
 const Task = ({index,id,text,deadline,completed,removeTask,taskStatusSwitch}) => {

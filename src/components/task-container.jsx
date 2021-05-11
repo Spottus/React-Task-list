@@ -1,17 +1,18 @@
-import TaskList from "./taskList";
 import { v4 as uuidv4 } from "uuid";
 import useInterval from "@use-it/interval";
 import { useState, useEffect } from "react";
-import InputTaskForm from "./inputTaskForm";
-import { cleanMerge, fetchApi, makeTaskJson } from "../logic/api-utils";
+import { cleanMerge } from "../utils/api-utils";
+import Search from "./search-container";
 
-const TaskController = ({
+const TaskContainer = ({
   formInput,
   taskDeadline,
-  searchTask,
-  setFormInput,
+  seekedTask,
+  setSeekedTask,
   setTaskDeadline,
-  setSearchTask,
+  setFormInput,
+  makeTaskJson,
+  fetchApi,
 }) => {
   const [taskArray, setTaskArray] = useState([]);
   const [verifyExpired, setVerifyExpired] = useState(false);
@@ -30,11 +31,10 @@ const TaskController = ({
     setTaskArray(result);
   };
 
-  const taskStatusSwitch = (targetId) => {
-    debugger
+  const completedSwitchTask = (targetId) => {
     const target = taskArray.find((element) => element.id === targetId);
     let newArrayTask = [...taskArray];
-    
+
     newArrayTask.forEach((element, index, array) => {
       if (element.id === target.id) {
         array[index] = makeTaskJson(
@@ -65,24 +65,20 @@ const TaskController = ({
   useInterval(() => setVerifyExpired(!verifyExpired), 30000);
 
   return (
-    <div>
-      <InputTaskForm
-        formInput={formInput}
-        taskDeadline={taskDeadline}
-        searchTask={searchTask}
-        setFormInput={setFormInput}
-        setTaskDeadline={setTaskDeadline}
-        setSearchTask={setSearchTask}
-        makeTask={makeTask}
-      />
-      <TaskList
-        searchTask={searchTask}
-        taskArray={taskArray}
-        removeTask={removeTask}
-        taskStatusSwitch={taskStatusSwitch}
-      />
-    </div>
+    <Search
+      formInput={formInput}
+      taskDeadline={taskDeadline}
+      seekedTask={seekedTask}
+      taskArray={taskArray}
+      setTaskArray={setTaskArray}
+      setSeekedTask={setSeekedTask}
+      setTaskDeadline={setTaskDeadline}
+      setFormInput={setFormInput}
+      makeTask={makeTask}
+      removeTask={removeTask}
+      completedSwitchTask={completedSwitchTask}
+    />
   );
 };
 
-export default TaskController;
+export default TaskContainer;
