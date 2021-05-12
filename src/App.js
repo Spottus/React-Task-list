@@ -1,12 +1,12 @@
 import React from "react";
-import InputTask from "./components/inputTask";
 import Header from "./components/header";
+import Input from "./components/input-container";
 
 const App = () => {
   return (
     <div>
       <Header title={"magic todo list"} />
-      <InputTask />
+     <Input/>
     </div>
   );
 };
