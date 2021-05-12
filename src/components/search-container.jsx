@@ -1,64 +1,70 @@
-import { useState } from "react";
+import {isExpired} from '../utils';
 import TaskList from "./task-list";
 import Form from "./task-input-form";
+import { useState, useContext } from "react";
+import { InputContext } from "./input-context";
 
-const Search = ({
-  formInput,
-  taskDeadline,
-  seekedTask,
-  taskArray,
-  setSeekedTask,
-  setTaskDeadline,
-  setFormInput,
-  makeTask,
-  removeTask,
-  completedSwitchTask,
-}) => {
-  const [checkbox, setCheckbox] = useState({
-   "firstBox":{
-    name:"tutti",
-    check:true},
-   "secondBox":{
-    check:"completi",
-   value:false},
-   "thirdBox":{
-    name:"scaduti",
-   check:false}
-  });
+const Search = ({ taskArray, makeTask, removeTask, completedSwitchTask }) => {
+  const [checkbox, setCheckbox] = useState([
 
-  const changeCheckBox = (index) =>
-  {
-    const target = checkbox.find(element=> element.name === 'tutti')
-    if(!target.check && checkbox[index] !== target)  setCheckbox(!checkbox[index].check)
-    if(target.check && checkbox[index] === target)  setCheckbox(!checkbox[index].check)
-    
-  }
+    { name: "tutti",
+      check: true,
+      id:0
+    },
+    {
+      name: "completi",
+      check: false,
+      id:1
+    },
+    {
+      name: "scaduti",
+      check: false,
+      id:2
+    }
+  ]);
 
+  const [, , seeked] = useContext(InputContext);
 
-  const searchTask = () =>
-  { 
-    const result =  taskArray.filter((elements) => elements.text.indexOf(searchTask) !== -1);
-    return result
-  }
+  const changeCheckBox = (id) => {
+    const priorityFlag = checkbox.find((element) => element.name === "tutti");
+
+    if (!priorityFlag.check) setCheckbox(!checkbox[id].check);
+
+    if (priorityFlag.check && checkbox[id] === priorityFlag)
+      setCheckbox(!checkbox[id].check);
+  };
+
+  const onlySearched = () => {
+    return taskArray.filter(
+      (element) => element.text.indexOf(seeked.seekedTask) !== -1
+    );
+  };
+
+  const onlyComplete = () => {
+    return taskArray.filter((element) => element.completed === true);
+  };
+
+  const onlyExpired = () => {
+    return taskArray.filter(
+      (element) => isExpired(element.deadline)
+    );
+  };
 
   return (
     <div>
-      <TaskList
-        formInput={formInput}
-        taskDeadline={taskDeadline}
-        seekedTask={seekedTask}
-        setSeekedTask={setSeekedTask}
-        setTaskDeadline={setTaskDeadline}
-        setFormInput={setFormInput}
+      <Form
         makeTask={makeTask}
+        checkbox={checkbox}
+        changeCheckBox={changeCheckBox}
+      />
+      <TaskList
+        taskArray={taskArray}
         removeTask={removeTask}
         completedSwitchTask={completedSwitchTask}
+        onlySearched={onlySearched}
+        onlyComplete={onlyComplete}
+        onlyExpired={onlyExpired}
       />
-
-      <Form
-       
-       checkbox={checkbox}
-       />
     </div>
   );
 };

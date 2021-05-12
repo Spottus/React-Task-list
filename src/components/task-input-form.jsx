@@ -1,48 +1,45 @@
-import React from "react";
-
-const Form = ({
-  formInput,
-  taskDeadline,
-  searchTask,
-  taskSwitch,
-  setTaskSwitch,
-  setSearchTask,
-  setTaskDeadline,
-  setFormInput,
-  makeTask,
-  checkbox,
-}) => {
+import { useContext } from "react";
+import { InputContext } from "./input-context";
+const Form = ({ makeTask, checkbox, changeCheckBox }) => {
+  const [input, deadline, seeked] = useContext(InputContext);
 
   const renderCheckbox = () => {
-    return checkbox.map((element,index) => (
-      <input type="checkbox" name={element.name}  id = {index}  checked={element.check} />
+    
+    const result = checkbox.map((element) => (
+      <input
+        type="checkbox"
+        name={element.name}
+        key={element.id}
+        checked={element.check}
+        onClick={changeCheckBox(element.id)}
+      />
     ));
+    debugger;
+    return result;
   };
-
   return (
     <div>
       <label>text:</label>
       <input
         type="text"
-        value={formInput}
-        onChange={(event) => setFormInput(event.target.value)}
+        value={input.formInput}
+        onChange={(event) => input.setFormInput(event.target.value)}
       />
       <button onClick={makeTask}>aggiungi task</button>
       <label>deadline:</label>
       <input
         type="datetime-locaL"
-        value={taskDeadline}
-        onChange={(event) => setTaskDeadline(event.target.value)}
+        value={deadline.taskDeadline}
+        onChange={(event) => deadline.setTaskDeadline(event.target.value)}
       />
       <label>search:</label>
       <input
         type="text"
-        value={searchTask}
-        onChange={(event) => setSearchTask(event.target.value)}
+        value={seeked.seekedTask}
+        onChange={(event) => seeked.setSeekedTask(event.target.value)}
       />
-      <div>
-        {renderCheckbox}
-      </div>
+
+      <div>{renderCheckbox()}</div>
     </div>
   );
 };

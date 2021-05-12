@@ -1,28 +1,21 @@
 import { v4 as uuidv4 } from "uuid";
+import Search from './search-container'
 import useInterval from "@use-it/interval";
-import { useState, useEffect } from "react";
-import { cleanMerge } from "../utils/api-utils";
-import Search from "./search-container";
+import { InputContext } from "./input-context";
+import { useState, useEffect, useContext } from "react";
 
-const TaskContainer = ({
-  formInput,
-  taskDeadline,
-  seekedTask,
-  setSeekedTask,
-  setTaskDeadline,
-  setFormInput,
-  makeTaskJson,
-  fetchApi,
-}) => {
+
+
+const TaskContainer = ({ makeTaskJson, fetchApi, cleanDuplicated }) => {
   const [taskArray, setTaskArray] = useState([]);
   const [verifyExpired, setVerifyExpired] = useState(false);
-
+  const [input, deadline] = useContext(InputContext);
   const localStorageName = "myTaskArray";
 
   const makeTask = () => {
     setTaskArray([
       ...taskArray,
-      makeTaskJson(uuidv4(), formInput, taskDeadline, false),
+      makeTaskJson(uuidv4(), input.formInput, deadline.taskDeadline, false),
     ]);
   };
 
@@ -51,34 +44,22 @@ const TaskContainer = ({
 
   useEffect(() => {
     fetchApi(setTaskArray, localStorageName);
-  }, []);
+  }, [fetchApi]);
 
   useEffect(() => {
     const data = taskArray;
     const result = [];
 
-    data.forEach((element) => cleanMerge(element, result));
+    data.forEach((element) => cleanDuplicated(element, result));
 
     localStorage.setItem(localStorageName, JSON.stringify(result));
-  }, [taskArray]);
+  }, [taskArray,cleanDuplicated]);
 
   useInterval(() => setVerifyExpired(!verifyExpired), 30000);
 
-  return (
-    <Search
-      formInput={formInput}
-      taskDeadline={taskDeadline}
-      seekedTask={seekedTask}
-      taskArray={taskArray}
-      setTaskArray={setTaskArray}
-      setSeekedTask={setSeekedTask}
-      setTaskDeadline={setTaskDeadline}
-      setFormInput={setFormInput}
-      makeTask={makeTask}
-      removeTask={removeTask}
-      completedSwitchTask={completedSwitchTask}
-    />
-  );
+return <Search taskArray={taskArray} makeTask={makeTask} removeTask={removeTask} completedSwitchTask={completedSwitchTask} />
+  
+
 };
 
 export default TaskContainer;

@@ -1,14 +1,7 @@
-import { cleanMerge } from "../utils/api-utils";
-import { TaskContainer } from "./task-container";
+import TaskContainer from "./task-container";
 
-const ApiContainer = (
-  formInput,
-  taskDeadline,
-  searchTask,
-  setSearchTask,
-  setTaskDeadline,
-  setFormInput
-) => {
+
+const ApiContainer = () => {
   const makeTaskJson = (uuid, formInput, taskDeadline, comp) => {
     const id = uuid;
     const text = formInput;
@@ -16,6 +9,15 @@ const ApiContainer = (
     const completed = comp;
 
     return { id, text, deadline, completed };
+  };
+
+  const cleanDuplicated = (element, arrayEnd) => {
+    let check = 0;
+    for (let a in arrayEnd) {
+      if (arrayEnd[a].id === element.id) check++;
+    }
+
+    if (check <1) arrayEnd.push(element);
   };
 
   const fetchApi = async (setTargetState, localStorageTarget) => {
@@ -29,22 +31,18 @@ const ApiContainer = (
     const response = await (await fetch("http://localhost:3001/tasks")).json();
 
     const data = local !== null ? response.concat(local) : response;
-    data.forEach((element) => cleanMerge(element, result));
+    data.forEach((element) => cleanDuplicated(element, result));
     setTargetState(result);
   };
 
-  return (
-    <TaskContainer
-      formInput={formInput}
-      taskDeadline={taskDeadline}
-      searchTask={searchTask}
-      setSearchTask={setSearchTask}
-      setTaskDeadline={setTaskDeadline}
-      setFormInput={setFormInput}
-      makeTaskJson={makeTaskJson}
-      fetchApi={fetchApi}
-    />
-  );
+  return <TaskContainer makeTaskJson={makeTaskJson} fetchApi={fetchApi} cleanDuplicated={cleanDuplicated}/>
+    
+  
 };
 
 export default ApiContainer;
+
+
+    
+    
+    

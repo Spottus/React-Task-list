@@ -1,15 +1,16 @@
 import Task from "./task";
-import { taskSelector } from "../../logic/array";
 
-const TaskList = ({ taskArray, removeTask, taskStatusSwitch,taskSwitch, searchTask }) => {
-  
-  const targets = taskArray.filter(
-    (elements) => elements.text.indexOf(searchTask) !== -1
-  );
+const TaskList = ({
+  taskArray,
+  removeTask,
+  taskStatusSwitch,
+  completedSwitchTask,
+  onlySearched,
+  onlyComplete,
+  onlyExpired,
+}) => {
 
- 
-  const makeList = (arr) =>
-  {
+  const makeList = (arr) => {
     return arr.map((task, index) => (
       <li>
         <Task
@@ -20,12 +21,16 @@ const TaskList = ({ taskArray, removeTask, taskStatusSwitch,taskSwitch, searchTa
           deadline={task.deadline}
           completed={task.completed}
           removeTask={removeTask}
-          taskStatusSwitch={taskStatusSwitch}
+          completedSwitchTask={completedSwitchTask}
         />
       </li>
     ));
-  }
-  return <ul>{targets!==null? makeList(taskSelector(targets,taskSwitch)):makeList(taskSelector(taskArray,taskSwitch))}</ul>;
+  };
+  return (
+    <ul>
+     {onlySearched()!== null ? makeList(onlySearched()):makeList(taskArray)}
+    </ul>
+  );
 };
 
 export default TaskList;

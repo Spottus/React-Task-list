@@ -1,5 +1,8 @@
 import { useState } from "react";
-import ApiContainer from "./api-container";
+
+import ApiContainer from './api-container'
+import { InputContext } from "./input-context";
+
 
 const Input = () => {
   const [formInput, setFormInput] = useState("");
@@ -7,16 +10,16 @@ const Input = () => {
   const [seekedTask, setSeekedTask] = useState("");
 
   return (
-    <ApiContainer
-      formInput={formInput}
-      taskDeadline={taskDeadline}
-      seekedTask={seekedTask}
-      setSeekedTask={setSeekedTask}
-      setTaskDeadline={setTaskDeadline}
-      setFormInput={setFormInput}
-    />
+    <InputContext.Provider
+      value={[
+        { formInput, setFormInput },
+        { taskDeadline, setTaskDeadline },
+        { seekedTask, setSeekedTask },
+      ]}
+    >
+      <ApiContainer/>
+    </InputContext.Provider>
   );
 };
 
 export default Input;
-
