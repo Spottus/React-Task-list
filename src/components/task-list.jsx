@@ -3,12 +3,16 @@ import Task from "./task";
 const TaskList = ({
   taskArray,
   removeTask,
-  taskStatusSwitch,
+  checkbox,
   completedSwitchTask,
   onlySearched,
   onlyComplete,
   onlyExpired,
 }) => {
+let arrayToRender = taskArray
+
+if(checkbox[1].check) arrayToRender = onlyComplete(arrayToRender)
+if(checkbox[2].check) arrayToRender = onlyExpired(arrayToRender)
 
   const makeList = (arr) => {
     return arr.map((task, index) => (
@@ -28,7 +32,7 @@ const TaskList = ({
   };
   return (
     <ul>
-     {onlySearched()!== null ? makeList(onlySearched()):makeList(taskArray)}
+     {onlySearched(arrayToRender)!== null ? makeList(onlySearched(arrayToRender)):makeList(arrayToRender)}
     </ul>
   );
 };
