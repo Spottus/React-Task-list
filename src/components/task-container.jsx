@@ -42,6 +42,13 @@ const TaskContainer = ({ makeTaskJson, fetchApi, cleanDuplicated }) => {
     setTaskArray(newArrayTask);
   };
 
+  const removeCompletedTask = () =>
+  {
+    
+    const result = taskArray.filter((element) => element.completed === false)
+    setTaskArray(result)
+  }
+
   useEffect(() => {
     fetchApi(setTaskArray, localStorageName);
   }, [fetchApi]);
@@ -57,7 +64,7 @@ const TaskContainer = ({ makeTaskJson, fetchApi, cleanDuplicated }) => {
 
   useInterval(() => setVerifyExpired(!verifyExpired), 30000);
 
-return <Search taskArray={taskArray} makeTask={makeTask} removeTask={removeTask} completedSwitchTask={completedSwitchTask} />
+return <Search taskArray={taskArray} makeTask={makeTask} removeTask={removeTask} completedSwitchTask={completedSwitchTask} removeCompletedTask={removeCompletedTask}/>
   
 
 };

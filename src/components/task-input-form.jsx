@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { InputContext } from "./input-context";
-const Form = ({ makeTask, checkbox, changeCheckBox }) => {
+const Form = ({ makeTask, checkbox, changeCheckBox,removeCompletedTask }) => {
   const [input, deadline, seeked] = useContext(InputContext);
 
   const renderCheckbox = () => {
@@ -11,10 +11,9 @@ const Form = ({ makeTask, checkbox, changeCheckBox }) => {
         name={element.name}
         key={element.id}
         checked={element.check}
-        onClick={changeCheckBox(element.id)}
+        onClick={() => changeCheckBox(element.id)}
       />
     ));
-    debugger;
     return result;
   };
   return (
@@ -39,7 +38,8 @@ const Form = ({ makeTask, checkbox, changeCheckBox }) => {
         onChange={(event) => seeked.setSeekedTask(event.target.value)}
       />
 
-      <div>{renderCheckbox()}</div>
+      {renderCheckbox()}
+      <button onClick={removeCompletedTask}>remove completed</button>
     </div>
   );
 };
